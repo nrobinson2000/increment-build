@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 import neopo
 from subprocess import run, PIPE
 
@@ -11,5 +12,10 @@ VERSION = "%s.%s" % (count, commit)
 neopo.flags('-DRELEASE_STRING="%s"' % VERSION)
 
 # Build or flash firmware
-# neopo.build()
-neopo.flash()
+if len(sys.argv) < 2:
+    print("You must specify whether to build or flash!")
+
+if sys.argv[1] == "build":
+    neopo.build()
+elif sys.argv[1] == "flash":
+    neopo.flash()

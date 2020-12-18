@@ -1,38 +1,71 @@
-[![](https://api.travis-ci.org/yourUser/yourRepo.svg?branch=master)](https://travis-ci.org/yourUser/yourRepo)
 [![](https://img.shields.io/badge/built_with-neopo-informational)](https://neopo.xyz)
 
 # increment-build
 
-A Particle project named increment-build
+A demo project using Python and neopo to create a version string based on the latest commit and pass it to Particle firmware.
 
-## Welcome to your project!
 
-Every new Particle project is composed of 3 important elements that you'll see have been created in your project directory for increment-build.
+## USAGE
 
-#### ```/src``` folder:  
-This is the source folder that contains the firmware files for your project. It should *not* be renamed. 
-Anything that is in this folder when you compile your project will be sent to our compile service and compiled into a firmware binary for the Particle device that you have targeted.
 
-If your application contains multiple files, they should all be included in the `src` folder. If your firmware depends on Particle libraries, those dependencies are specified in the `project.properties` file referenced below.
+Creates the version string and passes it to the compiler using `EXTRA_CFLAGS`. The firmware is then built or flashed using neopo.
+```
+$ ./build.py build
+$ ./build.py flash
+```
 
-#### ```.ino``` file:
-This file is the firmware that will run as the primary application on your Particle device. It contains a `setup()` and `loop()` function, and can be written in Wiring or C/C++. For more information about using the Particle firmware API to create firmware for your Particle device, refer to the [Firmware Reference](https://docs.particle.io/reference/firmware/) section of the Particle documentation.
+Automated testing. Runs `build.py flash` and attaches the serial monitor to confirm that the device prints the version string:
+```
+$ ./test.sh
+```
 
-#### ```project.properties``` file:  
-This is the file that specifies the name and version number of the libraries that your project depends on. Dependencies are added automatically to your `project.properties` file when you add a library to a project using the `particle library add` command in the CLI or add a library in the Desktop IDE.
+## EXAMPLE OUTPUT
 
-## Adding additional files to your project
+```
+$ ./test.sh 
 
-#### Projects with multiple sources
-If you would like add additional files to your application, they should be added to the `/src` folder. All files in the `/src` folder will be sent to the Particle Cloud to produce a compiled binary.
+:::: PUTTING DEVICE INTO DFU MODE
 
-#### Projects with external libraries
-If your project includes a library that has not been registered in the Particle libraries system, you should create a new folder named `/lib/<libraryname>/src` under `/<project dir>` and add the `.h`, `.cpp` & `library.properties` files for your library there. Read the [Firmware Libraries guide](https://docs.particle.io/guide/tools-and-features/libraries/) for more details on how to develop libraries. Note that all contents of the `/lib` folder and subfolders will also be sent to the Cloud for compilation.
+Done.
 
-## Compiling your project
+:::: FLASHING APPLICATION
 
-When you're ready to compile your project, make sure you have the correct Particle device target selected and run `particle compile <platform>` in the CLI or click the Compile button in the Desktop IDE. The following files in your project folder will be sent to the compile service:
+   text    data     bss     dec     hex filename
+   3548     108    1216    4872    1308 /home/nrobinson/code/increment-build/target/photon/increment-build.elf
+dfu-suffix (dfu-util) 0.9
 
-- Everything in the `/src` folder, including your `.ino` application file
-- The `project.properties` file for your project
-- Any libraries stored under `lib/<libraryname>/src`
+Copyright 2011-2012 Stefan Schmidt, 2013-2014 Tormod Volden
+This program is Free Software and has ABSOLUTELY NO WARRANTY
+Please report bugs to http://sourceforge.net/p/dfu-util/tickets/
+
+Suffix successfully added to file
+Serial device PARTICLE_SERIAL_DEV : not available
+Flashing using dfu:
+dfu-util 0.9
+
+Copyright 2005-2009 Weston Schmidt, Harald Welte and OpenMoko Inc.
+Copyright 2010-2016 Tormod Volden and Stefan Schmidt
+This program is Free Software and has ABSOLUTELY NO WARRANTY
+Please report bugs to http://sourceforge.net/p/dfu-util/tickets/
+
+Opening DFU capable USB device...
+ID 2b04:d006
+Run-time device DFU version 011a
+Claiming USB DFU Interface...
+Setting Alternate Setting #0 ...
+Determining device status: state = dfuIDLE, status = 0
+dfuIDLE, continuing
+DFU mode device DFU version 011a
+Device returned transfer size 4096
+DfuSe interface name: "Internal Flash   "
+Downloading to address = 0x080a0000, size = 3656
+Download        [=========================] 100%         3656 bytes
+Download done.
+File downloaded successfully
+
+*** FLASHED SUCCESSFULLY ***
+
+Opening serial monitor for com port: "/dev/ttyACM0"
+Serial monitor opened successfully:
+Build version: 3.da4c286
+```

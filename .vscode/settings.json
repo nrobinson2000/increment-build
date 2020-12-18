@@ -7,5 +7,5 @@
     },
     "particle.targetPlatform": "photon",
     "particle.firmwareVersion": "2.0.1",
-    "EXTRA_CFLAGS": "-DRELEASE_STRING=\"2.044feaf\""
+    "EXTRA_CFLAGS": "-DRELEASE_STRING=\"3.da4c286\""
 }
